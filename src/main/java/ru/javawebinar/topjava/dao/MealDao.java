@@ -12,7 +12,10 @@ public class MealDao {
     public List<Meal> getAllMeal(){
         return dataSource.getMeals();
     }
+    public List<MealTo> getAllMealToWithFilter(){
+        return dataSource.getMealToWithFilter();
+    }
     public List<MealTo> getAllMealTo(){
-        return dataSource.getMealTo();
+        return dataSource.getMealsTo();
     }
 }

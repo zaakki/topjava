@@ -24,10 +24,21 @@ public class DataSource {
             new Meal(LocalDateTime.of(2015, Month.MAY, 31, 13, 0), "Обед", 500),
             new Meal(LocalDateTime.of(2015, Month.MAY, 31, 20, 0), "Ужин", 510)
     );
+    private List<MealTo> mealsTo = Arrays.asList(
+            new MealTo(LocalDateTime.of(2015, Month.MAY, 30, 10, 0), "Завтрак", 500,false),
+            new MealTo(LocalDateTime.of(2015, Month.MAY, 30, 13, 0), "Обед", 1000,false),
+            new MealTo(LocalDateTime.of(2015, Month.MAY, 30, 20, 0), "Ужин", 500,false),
+            new MealTo(LocalDateTime.of(2015, Month.MAY, 31, 10, 0), "Завтрак", 1000,true),
+            new MealTo(LocalDateTime.of(2015, Month.MAY, 31, 13, 0), "Обед", 500,true),
+            new MealTo(LocalDateTime.of(2015, Month.MAY, 31, 20, 0), "Ужин", 510,true)
+    );
     public List<Meal> getMeals(){
         return meals;
     }
-    public List<MealTo> getMealTo(){
+    public List<MealTo> getMealToWithFilter(){
         return MealsUtil.filteredByStreams(meals,LocalTime.of(7, 0), LocalTime.of(12, 0), 2000);
+    }
+    public List<MealTo> getMealsTo(){
+        return mealsTo;
     }
 }
