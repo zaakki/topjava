@@ -1,9 +1,14 @@
 package ru.javawebinar.topjava.service;
 
-import ru.javawebinar.topjava.repository.MealRepository;
+import ru.javawebinar.topjava.model.Meal;
+import ru.javawebinar.topjava.util.exception.NotFoundException;
 
-public class MealService {
+import java.util.Collection;
 
-    private MealRepository repository;
-
+public interface MealService {
+    Meal create(Meal meal, int userId);
+    Meal get(int id, int userId) throws NotFoundException;
+    void delete(int id, int userId) throws NotFoundException;
+    void update(Meal meal, int userId) throws NotFoundException;
+    Collection<Meal> getAll(int userId);
 }
