@@ -46,6 +46,7 @@ public class JdbcUserRepository implements UserRepository {
                 .addValue("caloriesPerDay", user.getCaloriesPerDay());
 
         if (user.isNew()) {
+
             Number newKey = insertUser.executeAndReturnKey(map);
             user.setId(newKey.intValue());
         } else if (namedParameterJdbcTemplate.update(
