@@ -44,14 +44,19 @@ public class JdbcUserRepository implements UserRepository {
                 .addValue("registered", user.getRegistered())
                 .addValue("enabled", user.isEnabled())
                 .addValue("caloriesPerDay", user.getCaloriesPerDay());
+//        BeanPropertySqlParameterSource parameterSource = new BeanPropertySqlParameterSource(user);
+
 
         if (user.isNew()) {
 
             Number newKey = insertUser.executeAndReturnKey(map);
+//            Number newKey = insertUser.executeAndReturnKey(parameterSource);
             user.setId(newKey.intValue());
         } else if (namedParameterJdbcTemplate.update(
-                "UPDATE users SET name=:name, email=:email, password=:password, " +
+                "UPDATE users SET name=:name, email=:email, password=:password," +
+//                        "registered=:registered, enabled=:enabled, calories_per_day=:caloriesPerDay WHERE id=:id",parameterSource)==0){
                         "registered=:registered, enabled=:enabled, calories_per_day=:caloriesPerDay WHERE id=:id", map) == 0) {
+
             return null;
         }
         return user;
