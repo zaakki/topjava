@@ -4,6 +4,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.bridge.SLF4JBridgeHandler;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
@@ -12,9 +13,11 @@ import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.List;
 
+import static org.junit.Assert.assertThrows;
 import static ru.javawebinar.topjava.MealTestData.*;
 import static ru.javawebinar.topjava.UserTestData.ADMIN_ID;
 import static ru.javawebinar.topjava.UserTestData.USER_ID;
@@ -83,5 +86,11 @@ public class MealServiceTest {
         Meal newMeal = createNew();
         service.create(newMeal,USER_ID);
         assertMatch(service.getAll(USER_ID),MEAL1,MEAL2,MEAL3,MEAL4,MEAL5,MEAL6,MEAL7,newMeal);
+    }
+    //    public static final Meal MEAL3 = new Meal(MEAL_ID + 4, of(2020, Month.JANUARY, 30, 10, 0), "Breakfast", 300);
+    @Test
+    public void duplicateDateTimeCreate() throws Exception{
+        assertThrows(DataAccessException.class,()->
+                service.create((new Meal(null, LocalDateTime.of(2020,Month.JANUARY,30,10,0),"breakfast",500)),USER_ID));
     }
 }
