@@ -35,7 +35,6 @@ public class MealServiceTest {
     }
     @Autowired
     private MealService service;
-//5.2 Сделать тесты на чужую еду (delete, get, update) с тем, чтобы получить NotFoundException.
     @Test
     public void get() {
         Meal meal = service.get(MEAL_ID,USER_ID);
@@ -87,7 +86,6 @@ public class MealServiceTest {
         service.create(newMeal,USER_ID);
         assertMatch(service.getAll(USER_ID),MEAL1,MEAL2,MEAL3,MEAL4,MEAL5,MEAL6,MEAL7,newMeal);
     }
-    //    public static final Meal MEAL3 = new Meal(MEAL_ID + 4, of(2020, Month.JANUARY, 30, 10, 0), "Breakfast", 300);
     @Test
     public void duplicateDateTimeCreate() throws Exception{
         assertThrows(DataAccessException.class,()->
