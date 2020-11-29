@@ -39,7 +39,25 @@ $(function () {
                     "asc"
                 ]
             ]
-        })
+        }),
+        updateTable: function () {
+            $.get("/admin/users/", updateTableByData)
+        }
     };
     makeEditable();
 });
+
+function enable(chkbox, id) {
+    var enabled = chkbox.is(":checked");
+//  https://stackoverflow.com/a/22213543/548473
+    $.ajax({
+        url: "/admin/users/" + id,
+        type: "POST",
+        data: "enabled=" + enabled
+    }).done(function () {
+        chkbox.closest("tr").attr("data-userEnabled", enabled);
+        successNoty(enabled ? "Enabled" : "Disabled");
+    }).fail(function () {
+        $(chkbox).prop("checked", !enabled);
+    });
+}
