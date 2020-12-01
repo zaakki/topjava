@@ -1,13 +1,13 @@
-var form,context;
+var form;
 
 function makeEditable() {
-    context=ctx;
+
     form = $('#detailsForm');
-    $(".delete").click(function () {
-        if (confirm('Are you sure?')) {
-            deleteRow($(this).attr("id"));
-        }
-    });
+    // $(".delete").click(function () {
+    //     if (confirm('Are you sure?')) {
+    //         deleteRow($(this).attr("id"));
+    //     }
+    // });
 
     $(document).ajaxError(function (event, jqXHR, options, jsExc) {
         failNoty(jqXHR);
@@ -25,10 +25,10 @@ function add() {
 function deleteRow(id) {
     if (confirm('Are you sure?')) {
         $.ajax({
-            url: context.ajaxUrl + id,
-            type: "DELETE"
+            type: "DELETE",
+            url: ctx.ajaxUrl + id,
         }).done(function () {
-            context.updateTable();
+            ctx.updateTable();
             successNoty("Deleted");
         });
     }

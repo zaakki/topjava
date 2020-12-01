@@ -1,5 +1,10 @@
-var ctx;
-
+function updateFilteredTable() {
+    $.ajax({
+        type: "GET",
+        url: "/profile/meals/filter",
+        data: $('#filter').serialize()
+    }).done(updateTableByData);
+}
 $(function () {
     ctx = {
         ajaxUrl: "profile/meals/",
@@ -31,19 +36,13 @@ $(function () {
                     "desc"
                 ]
             ]
-        })
-        // updateTable: updateFilteredTable
+        }),
+        updateTable: updateFilteredTable
     };
     makeEditable();
 });
 
-function updateFilteredTable() {
-    $.ajax({
-        type: "GET",
-        url: "profile/meals/filter",
-        data: $('#filter').serialize()
-    }).done(updateTableByData);
-}
+
 function clearFilter(){
     $("#filter")[0].reset();
     $.get("/profile/meals/",updateTableByData);

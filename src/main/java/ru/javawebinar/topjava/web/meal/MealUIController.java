@@ -14,12 +14,12 @@ import java.time.LocalTime;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/profile/meals")
+@RequestMapping("/profile/meals")
 public class MealUIController extends AbstractMealController {
 
 
     @Override
-    @DeleteMapping(value = {"/id"})
+    @DeleteMapping(value = "/{id}")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void delete(@PathVariable int id) {
         super.delete(id);
