@@ -41,7 +41,7 @@ $(function () {
             ]
         }),
         updateTable: function () {
-            $.get("/admin/users/", updateTableByData)
+            $.get("admin/users/", updateTableByData)
         }
     };
     makeEditable();
@@ -49,9 +49,8 @@ $(function () {
 
 function enable(chkbox, id) {
     var enabled = chkbox.is(":checked");
-//  https://stackoverflow.com/a/22213543/548473
     $.ajax({
-        url: "/admin/users/" + id,
+        url: "admin/users/" + id,
         type: "POST",
         data: "enabled=" + enabled
     }).done(function () {
