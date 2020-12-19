@@ -75,6 +75,10 @@ public class ValidationUtil {
         return result;
     }
 
+    public static String getMessage(Throwable e){
+        return e.getLocalizedMessage() != null ? e.getLocalizedMessage() : e.getClass().getName();
+    }
+
 //    public static ResponseEntity<String> getErrorResponse(BindingResult result) {
 //        return ResponseEntity.unprocessableEntity().body(
 //                result.getFieldErrors().stream()
