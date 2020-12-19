@@ -97,7 +97,7 @@ public class ExceptionInfoHandler {
                 ((BindException) e).getBindingResult() : ((MethodArgumentNotValidException) e).getBindingResult();
 
         String[] details = result.getFieldErrors().stream()
-                .map(fieldError -> String.format("[%s] %s", fieldError.getField(), fieldError.getDefaultMessage()))
+                .map(fieldError -> messageUtil.getMessage(fieldError))
                 .toArray(String[]::new);
         return logAndGetErrorInfo(request, e, false, VALIDATION_ERROR, details);
     }

@@ -99,7 +99,7 @@ class ProfileRestControllerTest extends AbstractControllerTest {
 //                .content(jsonWithPassword(user,"password")))
 //                .andDo(print())
 //                .andExpect(status().isUnprocessableEntity())
-//                .andExpect(jsonPath("$.type").value(ErrorType.VALIDATION_ERROR.name()))
+//                .andExpect(errorType(ErrorType.VALIDATION_ERROR))
 //                .andDo(print());
 //    }
 //
@@ -113,7 +113,7 @@ class ProfileRestControllerTest extends AbstractControllerTest {
 //                .with(userHttpBasic(user))
 //                .content(jsonWithPassword(user,"password")))
 //                .andDo(print())
-//                .andExpect(status().isConflict())
+//                .andExpect(status().isUnprocessableEntity())
 //                .andExpect(errorType(ErrorType.VALIDATION_ERROR))
 //                .andExpect(detailMessage(EXCEPTION_DUPLICATE_EMAIL))
 //                .andDo(print());
