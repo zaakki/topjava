@@ -15,7 +15,6 @@ import static ru.javawebinar.topjava.util.ValidationUtil.checkNew;
 
 public abstract class AbstractUserController {
     protected final Logger log = LoggerFactory.getLogger(getClass());
-    public static final String DUPLICATE_EMAIL_EXCEPTION = "exception.user.duplicateEmail";
 
     @Autowired
     private UserService service;

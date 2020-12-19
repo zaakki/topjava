@@ -102,4 +102,21 @@ class ProfileRestControllerTest extends AbstractControllerTest {
 //                .andExpect(jsonPath("$.type").value(ErrorType.VALIDATION_ERROR.name()))
 //                .andDo(print());
 //    }
+//
+//    @Test
+//    @Transactional(propagation = Propagation.NEVER)
+//    void updateDuplicate() throws Exception{
+//        UserTo updatedTo = new UserTo(null,"newName", "admin@gmail.com", "newPassword", 1111);
+//
+//        perform(MockMvcRequestBuilders.put(REST_URL)
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .with(userHttpBasic(user))
+//                .content(jsonWithPassword(user,"password")))
+//                .andDo(print())
+//                .andExpect(status().isConflict())
+//                .andExpect(errorType(ErrorType.VALIDATION_ERROR))
+//                .andExpect(detailMessage(EXCEPTION_DUPLICATE_EMAIL))
+//                .andDo(print());
+//    }
+
 }

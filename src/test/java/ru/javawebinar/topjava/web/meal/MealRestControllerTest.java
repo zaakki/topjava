@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.service.MealService;
 import ru.javawebinar.topjava.util.exception.ErrorType;
@@ -23,6 +25,7 @@ import static ru.javawebinar.topjava.UserTestData.USER_ID;
 import static ru.javawebinar.topjava.UserTestData.user;
 import static ru.javawebinar.topjava.util.MealsUtil.createTo;
 import static ru.javawebinar.topjava.util.MealsUtil.getTos;
+import static ru.javawebinar.topjava.web.ExceptionInfoHandler.EXCEPTION_DUPLICATE_DATETIME;
 
 class MealRestControllerTest extends AbstractControllerTest {
 
@@ -126,23 +129,53 @@ class MealRestControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    void createInvalid() throws Exception{
+    void createInvalid() throws Exception {
         Meal invalidMeal = new Meal(null, "Invalid", 150);
-       perform(MockMvcRequestBuilders.post(REST_URL).contentType(MediaType.APPLICATION_JSON).content(JsonUtil.writeValue(invalidMeal)).with(userHttpBasic(user)))
-               .andDo(print())
-               .andExpect(status().isUnprocessableEntity())
-               .andExpect(jsonPath("$.type").value(ErrorType.VALIDATION_ERROR.name()))
-               .andDo(print());
-
-    }
-    @Test
-    void updateInvalid() throws Exception{
-        Meal invalidMeal = new Meal(MEAL1_ID,null,null,6000);
-        perform(MockMvcRequestBuilders.put(REST_URL+MEAL1_ID).contentType(MediaType.APPLICATION_JSON).content(JsonUtil.writeValue(invalidMeal)).with(userHttpBasic(user)))
+        perform(MockMvcRequestBuilders.post(REST_URL).contentType(MediaType.APPLICATION_JSON).content(JsonUtil.writeValue(invalidMeal)).with(userHttpBasic(user)))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity())
-                .andExpect(jsonPath("$.type").value(ErrorType.VALIDATION_ERROR.name()))
+                .andExpect(errorType(ErrorType.VALIDATION_ERROR))
+                .andDo(print());
+
+    }
+
+    @Test
+    void updateInvalid() throws Exception {
+        Meal invalidMeal = new Meal(MEAL1_ID, null, null, 6000);
+        perform(MockMvcRequestBuilders.put(REST_URL + MEAL1_ID).contentType(MediaType.APPLICATION_JSON).content(JsonUtil.writeValue(invalidMeal)).with(userHttpBasic(user)))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity())
+                .andExpect(errorType(ErrorType.VALIDATION_ERROR))
                 .andDo(print());
     }
 
+    @Test
+    @Transactional(propagation = Propagation.NEVER)
+    void updateDuplicate() throws Exception {
+        Meal invalid = new Meal(MEAL1_ID, meal2.getDateTime(), "Invalid", 300);
+
+        perform(MockMvcRequestBuilders.put(REST_URL + MEAL1_ID).
+                contentType(MediaType.APPLICATION_JSON)
+                .content(JsonUtil.writeValue(invalid))
+                .with(userHttpBasic(user)))
+                .andDo(print())
+                .andExpect(status().isConflict())
+                .andExpect(errorType(ErrorType.VALIDATION_ERROR))
+                .andExpect(detailMessage(EXCEPTION_DUPLICATE_DATETIME));
+    }
+/////////////////////////////CHECK LATER//////////////////////
+//    @Test
+//    @Transactional
+//    void createDuplicate() throws Exception{
+//        Meal invalid = new Meal(null, adminMeal1.getDateTime(),"invalid", 333);
+//
+//        perform(MockMvcRequestBuilders.post(REST_URL).
+//                contentType(MediaType.APPLICATION_JSON)
+//                .content(JsonUtil.writeValue(invalid))
+//                .with(userHttpBasic(user)))
+//                .andDo(print())
+//                .andExpect(status().isConflict())
+//                .andExpect(errorType(ErrorType.VALIDATION_ERROR))
+//                .andExpect(detailMessage(EXCEPTION_DUPLICATE_DATETIME));
+//    }
 }
